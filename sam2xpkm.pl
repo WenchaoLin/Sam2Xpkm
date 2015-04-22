@@ -28,8 +28,6 @@ my %reads_pos;
 my($total_reads,$mapped_reads,$total_unmapped_reads);
 my($single_mapped_reads,$single_unmapped_reads,$pair_mapped_reads,$pair_unmapped_reads,$fragments_mapped);
 
-my $last = "";
-
 open(SAM,"<$sam_file") or die $!;
 while(<SAM>){
     chomp;
@@ -49,15 +47,12 @@ while(<SAM>){
             }else{
                 $pair_mapped_reads ++;
                 $reads_pos{$t[3]} ++;
-                if($t[0] eq $last){
-                    $frags_pos{$t[3]} ++;
-                    $fragments_mapped ++;
-                }
-                $last = $t[0];
+
+                $frags_pos{$t[3]} += 0.5;
+                $fragments_mapped += 0.5;
             }
         }else{
             $pair_unmapped_reads ++;
-            $last = $t[0];
         }
 
     }
